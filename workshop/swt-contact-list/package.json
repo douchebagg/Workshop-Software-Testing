@@ -17,7 +17,6 @@
   },
   "homepage": "https://github.com/ballweera/swt-contact-list#readme",
   "dependencies": {
-    "supertest": "^3.0.0",
     "tape": "^4.8.0"
   },
   "devDependencies": {
@@ -25,7 +24,10 @@
     "chai": "^4.1.2",
     "chai-http": "^3.0.0",
     "express": "^4.16.2",
-    "jest": "^21.2.1"
+    "jest": "^21.2.1",
+    "mocha": "^4.0.1",
+    "should": "^13.1.3",
+    "supertest": "^3.0.0"
   },
   "directories": {
     "test": "test"
