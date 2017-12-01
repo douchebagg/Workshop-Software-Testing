@@ -1,7 +1,25 @@
 const test = require('tape')
 const request = require('supertest')
+const should = require( 'chai' ).should()
 const app = require('../server')
 
+function isField(t, contacts){
+    for(let i = 0; i < contacts.length; i++){
+        t.equal(false, !contacts[i].should.include.keys(["id", "name", "email", "phone", "url", "notes"]),
+         "res.body[" + i + "] have all property") 
+    }
+}
+
+test.only('GET /contects', function(t) {
+    request(app).get('/contacts')
+        .expect(200)
+        .then(function(res) {
+            let contacts = res.body
+            t.equal(12, contacts.length, "res.body has length is 12, when open /contects")
+            isField(t, contacts)
+            t.end()
+        })
+})
 
 // test('First test case', (t) => {
 
@@ -18,6 +36,7 @@ const app = require('../server')
 //         })
 
 // })
+
 test('GET /contacts/id', () => {
     if ('should respond with a single user', (t) => {
             app.request
