@@ -27,14 +27,19 @@ test('GET /contects/:id', function(t) {
         .expect(200)
         .then(function(res) {
             let contacts = res.body
-            t.equal(13, contacts.length, "res.body has length is 13, when open /contects/id.")
+            t.equal(11, contacts.length, "there shouldhas length is 11, when open /contects/id.")
+            t.equal(contacts.id, 2, "id at position 0 should be 11.")
+            t.equal(contacts.name, 'Samwell Tarly', "get name at id 2")
+            t.equal(contacts.email, 'starly@castleblack.com', "get email at id 2")
+            t.equal(contacts.phone, '123-456-7890', "get phone at id 2")
+            t.equal(contacts.url, 'www.google.com', "get url at id 2")
+            t.equal(contacts.notes, 'Loyal brother of the watch.', "get notes at id 2")
             isField(t, contacts)
             t.end()
         })
 })
 test('POST /contacts', (t) => {
     const obj = {
-        id: 13,
         name: 'thakdanai chanklom',
         email: 'thakdanai@chanklom.com',
         phone: '086-222-5894',
@@ -46,8 +51,7 @@ test('POST /contacts', (t) => {
         .expect(201)
         .then((res) => {
             let contact = res.body
-            t.equal(13, contacts.length, "there should has length at 13, when update contact.")
-            t.equal(13, contacts[0].id, "id at position 0 should be 13.")
+            t.equal(12, contacts.length, "there should has length at 12, when update contact.")
             t.equal('thakdanai chanklom', contacts[0].name, "name at position 0 should be thakdanai chanklom.")
             t.equal('thakdanai@chanklom.com', contacts[0].email, "email at position 0 should be thakdanai@chanklom.com.")
             t.equal('086-222-5894', contacts[0].phone, "phone at position 0 should be 086-222-5894.")
