@@ -3,10 +3,10 @@ const request = require('supertest')
 const should = require('chai').should()
 const app = require('../server')
 
-function isField(t, contacts){
-    for(let i = 0; i < contacts.length; i++){
+function isField(t, contacts) {
+    for (let i = 0; i < contacts.length; i++) {
         t.true(contacts[i].should.include.keys(["id", "name", "email", "phone", "url", "notes"]),
-         "res.body[" + i + "] have all property.") 
+            "res.body[" + i + "] have all property.")
     }
 }
 
@@ -21,47 +21,52 @@ test('GET /contects', function(t) {
             t.end()
         })
 })
-/*
-test('GET /contacts/id', () => {
-    if ('should respond with a single user', (t) => {
-            app.request
-                .get('/contact/:id')
-                .end((err, res) => {
-                    // there should be no errors
-                    should.not.exist(err);
-                    // there should be a 200 status code
-                    res.status.should.equal(200)
-                    res.type.should.equal('application/json');
-                    res.body.contacts[0].should.include.keys(
-                        'id', 'name', 'email', 'url'
-                    );
-                    done();
-                });
-        });
-});
-*/
-// test('POST /contacts', (t) => {
-//     request(app).post('/contacts')
-//         .send({ id: 12, name: 'Petyr Baelish', email: 'petyr@baelishindustries.com', phone: '123-456-7890', url: 'www.google.com', notes: 'Do not trust anyone.' })
-//         .expect(200)
-//         .then((res) => {
-//             let student = res.body
-
-//             t.equal('fluke', student.name)
-//             t.end()
-//         })
-// })
+test('GET /contects/:id', function(t) {
+    request(app).get('/contacts/id')
+        // there should be 200 "OK"
+        .expect(200)
+        .then(function(res) {
+            let contacts = res.body
+            t.equal(13, contacts.length, "res.body has length is 13, when open /contects/id.")
+            isField(t, contacts)
+            t.end()
+        })
+})
+test('POST /contacts', (t) => {
+    const obj = {
+        id: 13,
+        name: 'thakdanai chanklom',
+        email: 'thakdanai@chanklom.com',
+        phone: '086-222-5894',
+        url: 'www.chanklom.com',
+        notes: 'Do not trust anyone'
+    }
+    request(app).post('/contacts')
+        .send(obj)
+        .expect(201)
+        .then((res) => {
+            let contact = res.body
+            t.equal(13, contacts.length, "there should has length at 13, when update contact.")
+            t.equal(13, contacts[0].id, "id at position 0 should be 13.")
+            t.equal('thakdanai chanklom', contacts[0].name, "name at position 0 should be thakdanai chanklom.")
+            t.equal('thakdanai@chanklom.com', contacts[0].email, "email at position 0 should be thakdanai@chanklom.com.")
+            t.equal('086-222-5894', contacts[0].phone, "phone at position 0 should be 086-222-5894.")
+            t.equal('www.chanklom.com', contacts[0].url, "url at position 0 should be www.chanklom.com.")
+            t.equal('Do not trust anyone.', contacts[0].notes, "Do not trust anyone.")
+            t.end()
+        })
+})
 
 test('PUT /contacts/:id', function(t) {
     const obj = {
         id: 12,
-        name: 'Suphekiat Kiatkanya', 
-        email: 'suphakiat@localmail.com', 
-        phone: '082-222-2220', 
-        url: 'www.douchebag.com', 
+        name: 'Suphekiat Kiatkanya',
+        email: 'suphakiat@localmail.com',
+        phone: '082-222-2220',
+        url: 'www.douchebag.com',
         notes: 'I don\'t seen anything'
     }
-    
+
     request(app).put('/contacts/0')
         .send(obj)
         // there should be 200 "OK"
@@ -69,7 +74,7 @@ test('PUT /contacts/:id', function(t) {
         .end(function(err, res) {
             if (err) throw err;
         })
-        
+
     request(app).get('/contacts/')
         // there should be 200 "OK"
         .expect(200)
