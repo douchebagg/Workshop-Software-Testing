@@ -21,6 +21,7 @@ test('GET /contects', function(t) {
             t.end()
         })
 })
+/*
 test('GET /contects/:id', function(t) {
     request(app).get('/contacts/id')
         // there should be 200 "OK"
@@ -38,6 +39,7 @@ test('GET /contects/:id', function(t) {
             t.end()
         })
 })
+
 test('POST /contacts', (t) => {
     const obj = {
         name: 'thakdanai chanklom',
@@ -59,9 +61,9 @@ test('POST /contacts', (t) => {
             t.equal('Do not trust anyone.', contacts[0].notes, "Do not trust anyone.")
             t.end()
         })
-})
+})*/
 
-test('PUT /contacts/:id', function(t) {
+test('PUT /contacts/:id \n when update at position 0.', function(t) {
     const obj = {
         id: 12,
         name: 'Suphekiat Kiatkanya',
@@ -75,22 +77,50 @@ test('PUT /contacts/:id', function(t) {
         .send(obj)
         // there should be 200 "OK"
         .expect(200)
-        .end(function(err, res) {
-            if (err) throw err;
+        .then(function(response) {
+            request(app).get('/contacts/')
+            // there should be 200 "OK"
+            .expect(200)
+            .then(function(res) {
+                let contacts = res.body
+                t.equal(12, contacts.length, "there should has length at 12, when update contact.")
+                t.equal(12, contacts[0].id, "id at position 0 should be 12.")
+                t.equal('Suphekiat Kiatkanya', contacts[0].name, "name at position 0 should be Suphekiat Kiatkanya.")
+                t.equal('suphakiat@localmail.com', contacts[0].email, "email at position 0 should be suphakiat@localmail.com.")
+                t.equal('082-222-2220', contacts[0].phone, "phone at position 0 should be 082-222-2220.")
+                t.equal('www.douchebag.com', contacts[0].url, "url at position 0 should be www.douchebag.com.")
+                t.equal('I don\'t seen anything', contacts[0].notes, "notes at position 0 should be 'I don't seen anything'.")
+                t.end()
+            })
         })
+})
 
-    request(app).get('/contacts/')
+test('PUT /contacts/:id \n when update at position 11 with obj don\'t have url and notes.', function(t) {
+    const obj = {
+        id: 12,
+        name: 'Suphekiat Kiatkanya',
+        email: 'suphakiat@localmail.com',
+        phone: '082-222-2220'
+    }
+
+    request(app).put('/contacts/11')
+        .send(obj)
         // there should be 200 "OK"
         .expect(200)
-        .then(function(res) {
-            let contacts = res.body
-            t.equal(12, contacts.length, "there should has length at 12, when update contact.")
-            t.equal(12, contacts[0].id, "id at position 0 should be 12.")
-            t.equal('Suphekiat Kiatkanya', contacts[0].name, "name at position 0 should be Suphekiat Kiatkanya.")
-            t.equal('suphakiat@localmail.com', contacts[0].email, "email at position 0 should be suphakiat@localmail.com.")
-            t.equal('082-222-2220', contacts[0].phone, "phone at position 0 should be 082-222-2220.")
-            t.equal('www.douchebag.com', contacts[0].url, "url at position 0 should be www.douchebag.com.")
-            t.equal('I don\'t seen anything', contacts[0].notes, "notes at position 0 should be 'I don't seen anything'.")
-            t.end()
+        .then(function(response) {
+            request(app).get('/contacts/')
+            // there should be 200 "OK"
+            .expect(200)
+            .then(function(res) {
+                let contacts = res.body
+                t.equal(12, contacts.length, "there should has length at 12, when update contact.")
+                t.equal(12, contacts[11].id, "id at position 11 should be 12.")
+                t.equal('Suphekiat Kiatkanya', contacts[11].name, "name at position 11 should be Suphekiat Kiatkanya.")
+                t.equal('suphakiat@localmail.com', contacts[11].email, "email at position 11 should be suphakiat@localmail.com.")
+                t.equal('082-222-2220', contacts[11].phone, "phone at position 11 should be 082-222-2220.")
+                t.equal(undefined, contacts[11].url, "url at position 11 should be undefined.")
+                t.equal(undefined, contacts[11].notes, "notes at position 11 should be undefined.")
+                t.end()
+            })
         })
 })

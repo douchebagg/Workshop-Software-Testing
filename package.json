@@ -1,0 +1,24 @@
+{
+  "name": "swt-contact-list",
+  "version": "1.0.0",
+  "description": "Overview\r =========",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "./node_modules/.bin/jest"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "chai": "^4.1.2",
+    "express": "^4.16.2",
+    "jest": "^21.2.1",
+    "superagent": "^3.8.1",
+    "supertest": "^3.0.0",
+    "tape": "^4.8.0"
+  }
+}
