@@ -1,34 +1,46 @@
-const test = require('tape')
 const request = require('supertest')
-const should = require('chai').should()
 const app = require('../server')
 
-function isField(t, contacts) {
-    for (let i = 0; i < contacts.length; i++) {
-        t.true(contacts[i].should.include.keys(["id", "name", "email", "phone", "url", "notes"]),
-            "res.body[" + i + "] have all property.")
-    }
-}
-
-test('GET /contects', function(t) {
-    request(app).get('/contacts')
-        // there should be 200 "OK"
-        .expect(200)
-        .then(function(res) {
-            let contacts = res.body
-            t.equal(12, contacts.length, "res.body has length is 12, when open /contects.")
-            isField(t, contacts)
-            t.end()
-        })
+describe('GET /contects', function() {
+    it('should return all contacts, when call /contects with method GET.', function() {
+        return request(app).get('/contacts')
+            // there should be 200 "OK"
+            .expect(200)
+            .then(function(res) {
+                let contacts = res.body
+                expect(contacts).toHaveLength(12)
+                
+                for(let i = 0; i < contacts.length; i++) {
+                    expect(contacts[i].id).toBeDefined()
+                    expect(contacts[i].name).toBeDefined()
+                    expect(contacts[i].email).toBeDefined()
+                    expect(contacts[i].phone).toBeDefined()
+                    expect(contacts[i].url).toBeDefined()
+                    expect(contacts[i].notes).toBeDefined()
+                }
+            })
+    })
 })
+
+describe('GET /contects/:id', function() {
+    it('should return contact at position 0, when call /contects/0 with method GET.', function() {
+
+    })
+
+    it('should return contact at position 11, when call /contects/11 with method GET.', function() {
+        
+    })
+})
+
 /*
+
 test('GET /contects/:id', function(t) {
     request(app).get('/contacts/id')
         // there should be 200 "OK"
         .expect(200)
         .then(function(res) {
             let contacts = res.body
-            t.equal(11, contacts.length, "there shouldhas length is 11, when open /contects/id.")
+            t.equal(11, contacts.length, "there should has length is 11, when open /contects/id.")
             t.equal(contacts.id, 2, "id at position 0 should be 11.")
             t.equal(contacts.name, 'Samwell Tarly', "get name at id 2")
             t.equal(contacts.email, 'starly@castleblack.com', "get email at id 2")
@@ -39,88 +51,125 @@ test('GET /contects/:id', function(t) {
             t.end()
         })
 })
+*/
 
-test('POST /contacts', (t) => {
-    const obj = {
-        name: 'thakdanai chanklom',
-        email: 'thakdanai@chanklom.com',
-        phone: '086-222-5894',
-        url: 'www.chanklom.com',
-        notes: 'Do not trust anyone'
-    }
-    request(app).post('/contacts')
-        .send(obj)
-        .expect(201)
-        .then((res) => {
-            let contact = res.body
-            t.equal(12, contacts.length, "there should has length at 12, when update contact.")
-            t.equal('thakdanai chanklom', contacts[0].name, "name at position 0 should be thakdanai chanklom.")
-            t.equal('thakdanai@chanklom.com', contacts[0].email, "email at position 0 should be thakdanai@chanklom.com.")
-            t.equal('086-222-5894', contacts[0].phone, "phone at position 0 should be 086-222-5894.")
-            t.equal('www.chanklom.com', contacts[0].url, "url at position 0 should be www.chanklom.com.")
-            t.equal('Do not trust anyone.', contacts[0].notes, "Do not trust anyone.")
-            t.end()
-        })
-})*/
+describe('POST /contacts', function() {
+    it('should return contact at position 12, when call /contects/ with method POST and sent new contact.', function() {
+        const obj = {
+            name: 'thakdanai chanklom',
+            email: 'thakdanai@chanklom.com',
+            phone: '086-222-5894',
+            url: 'www.chanklom.com',
+            notes: 'Do not trust anyone'
+        }
 
-test('PUT /contacts/:id \n when update at position 0.', function(t) {
-    const obj = {
-        id: 12,
-        name: 'Suphekiat Kiatkanya',
-        email: 'suphakiat@localmail.com',
-        phone: '082-222-2220',
-        url: 'www.douchebag.com',
-        notes: 'I don\'t seen anything'
-    }
+        return request(app).post('/contacts')
+            .send(obj)
+            // there should be 201 "Created"
+            .expect(201)
+            .then((res) => {
+                let contact = res.body
+                expect(contact.id).toBe(12)
+                expect(contact.name).toBe('thakdanai chanklom')
+                expect(contact.email).toBe('thakdanai@chanklom.com')
+                expect(contact.phone).toBe('086-222-5894')
+                expect(contact.url).toBe('www.chanklom.com')
+                expect(contact.notes).toBe('Do not trust anyone')
 
-    request(app).put('/contacts/0')
-        .send(obj)
-        // there should be 200 "OK"
-        .expect(200)
-        .then(function(response) {
-            request(app).get('/contacts/')
-            // there should be 200 "OK"
-            .expect(200)
-            .then(function(res) {
-                let contacts = res.body
-                t.equal(12, contacts.length, "there should has length at 12, when update contact.")
-                t.equal(12, contacts[0].id, "id at position 0 should be 12.")
-                t.equal('Suphekiat Kiatkanya', contacts[0].name, "name at position 0 should be Suphekiat Kiatkanya.")
-                t.equal('suphakiat@localmail.com', contacts[0].email, "email at position 0 should be suphakiat@localmail.com.")
-                t.equal('082-222-2220', contacts[0].phone, "phone at position 0 should be 082-222-2220.")
-                t.equal('www.douchebag.com', contacts[0].url, "url at position 0 should be www.douchebag.com.")
-                t.equal('I don\'t seen anything', contacts[0].notes, "notes at position 0 should be 'I don't seen anything'.")
-                t.end()
+                return request(app).get('/contacts')
+                    .then((res) => {
+                        let contacts = res.body
+                        expect(contacts).toHaveLength(13)
+                    })
             })
-        })
+    })
+
+    it('should return contact at position 13, when call /contects/ with method POST and sent new contact don\'t have phone.', function() {
+        const obj = {
+            name: 'thakdanai chanklom',
+            email: 'thakdanai@chanklom.com',
+            url: 'www.chanklom.com',
+            notes: 'Do not trust anyone'
+        }
+
+        return request(app).post('/contacts')
+            .send(obj)
+            // there should be 201 "Created"
+            .expect(201)
+            .then((res) => {
+                let contact = res.body
+                expect(contact.id).toBe(13)
+                expect(contact.name).toBe('thakdanai chanklom')
+                expect(contact.email).toBe('thakdanai@chanklom.com')
+                expect(contact.url).toBe('www.chanklom.com')
+                expect(contact.notes).toBe('Do not trust anyone')
+                expect(contact.phone).toBeUndefined()
+
+                return request(app).get('/contacts')
+                    .then((res) => {
+                        let contacts = res.body
+                        expect(contacts).toHaveLength(14)
+                    })
+            })
+    })
 })
 
-test('PUT /contacts/:id \n when update at position 11 with obj don\'t have url and notes.', function(t) {
-    const obj = {
-        id: 12,
-        name: 'Suphekiat Kiatkanya',
-        email: 'suphakiat@localmail.com',
-        phone: '082-222-2220'
-    }
+describe('PUT /contacts/:id', function() {
+    it('should update contact at position 0, when call /contects/0 with method PUT and send obj for update.', function() {
+        const obj = {
+            id: 12,
+            name: 'Suphekiat Kiatkanya',
+            email: 'suphakiat@gmail.com',
+            phone: '082-222-2220',
+            url: 'www.douchebag.com',
+            notes: 'I don\'t seen anything'
+        }
+    
+        return request(app).put('/contacts/0')
+            .send(obj)
+            // there should be 200 "OK"
+            .expect(200)
+            .then(function(response) {
+                return request(app).get('/contacts/0')
+                    // there should be 200 "OK"
+                    .expect(200)
+                    .then(function(res) {
+                        let contact = res.body
+                        expect(contact.id).toBe(12)
+                        expect(contact.name).toBe('Suphekiat Kiatkanya')
+                        expect(contact.email).toBe('suphakiat@gmail.com')
+                        expect(contact.phone).toBe('082-222-2220')
+                        expect(contact.url).toBe('www.douchebag.com')
+                        expect(contact.notes).toBe('I don\'t seen anything')
+                    })
+            })
+    })
 
-    request(app).put('/contacts/11')
+    it('should update contact at position 13, when call /contects/13 with method PUT and send obj for update, but obj don\'t have url and notes.', function() {
+        const obj = {
+            id: 13,
+            name: 'thakdanai chanklom',
+            email: 'thakdanai@chanklom.com',
+            phone: '086-222-5894'
+        }
+
+        return request(app).put('/contacts/13')
         .send(obj)
         // there should be 200 "OK"
         .expect(200)
         .then(function(response) {
-            request(app).get('/contacts/')
-            // there should be 200 "OK"
-            .expect(200)
-            .then(function(res) {
-                let contacts = res.body
-                t.equal(12, contacts.length, "there should has length at 12, when update contact.")
-                t.equal(12, contacts[11].id, "id at position 11 should be 12.")
-                t.equal('Suphekiat Kiatkanya', contacts[11].name, "name at position 11 should be Suphekiat Kiatkanya.")
-                t.equal('suphakiat@localmail.com', contacts[11].email, "email at position 11 should be suphakiat@localmail.com.")
-                t.equal('082-222-2220', contacts[11].phone, "phone at position 11 should be 082-222-2220.")
-                t.equal(undefined, contacts[11].url, "url at position 11 should be undefined.")
-                t.equal(undefined, contacts[11].notes, "notes at position 11 should be undefined.")
-                t.end()
-            })
+            return request(app).get('/contacts/13')
+                // there should be 200 "OK"
+                .expect(200)
+                .then(function(res) {
+                    let contact = res.body
+                    expect(contact.id).toBe(13)
+                    expect(contact.name).toBe('thakdanai chanklom')
+                    expect(contact.email).toBe('thakdanai@chanklom.com')
+                    expect(contact.phone).toBe('086-222-5894')
+                    expect(contact.url).toBeUndefined()
+                    expect(contact.notes).toBeUndefined()
+                })
         })
+    })
 })

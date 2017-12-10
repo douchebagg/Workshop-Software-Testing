@@ -1,24 +1,31 @@
 {
-  "name": "swt-contact-list",
+  "name": "workshop",
   "version": "1.0.0",
-  "description": "Overview\r =========",
+  "description": "",
   "main": "index.js",
-  "directories": {
-    "test": "test"
-  },
-  "scripts": {
-    "test": "./node_modules/.bin/jest"
-  },
-  "author": "",
-  "license": "ISC",
+  "dependencies": {},
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.6.1",
-    "chai": "^4.1.2",
     "express": "^4.16.2",
     "jest": "^21.2.1",
-    "superagent": "^3.8.1",
-    "supertest": "^3.0.0",
-    "tape": "^4.8.0"
-  }
+    "superagent": "^3.8.2",
+    "supertest": "^3.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "jest": {
+    "testRegex": "test\\contact.spec.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/douchebagg/Workshop-Softtest.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/douchebagg/Workshop-Softtest/issues"
+  },
+  "homepage": "https://github.com/douchebagg/Workshop-Softtest#readme"
 }
