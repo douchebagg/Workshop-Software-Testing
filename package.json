@@ -1,7 +1,6 @@
 {
   "name": "workshop",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "dependencies": {},
   "devDependencies": {
@@ -13,10 +12,10 @@
     "supertest": "^3.0.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/.bin/jest"
   },
   "jest": {
-    "testRegex": "test\\contact.spec.js"
+    "testRegex": "test/contact.spec.js"
   },
   "repository": {
     "type": "git",
@@ -27,5 +26,9 @@
   "bugs": {
     "url": "https://github.com/douchebagg/Workshop-Softtest/issues"
   },
-  "homepage": "https://github.com/douchebagg/Workshop-Softtest#readme"
+  "homepage": "https://github.com/douchebagg/Workshop-Softtest#readme",
+  "directories": {
+    "test": "test"
+  },
+  "description": ""
 }
