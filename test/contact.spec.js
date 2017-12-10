@@ -23,13 +23,7 @@ describe('GET /contects', function() {
 })
 
 describe('GET /contects/:id', function() {
-    it('should return contact at position 0, when call /contects/0 with method GET.', function() {
-
-    })
-
-    it('should return contact at position 11, when call /contects/11 with method GET.', function() {
-        
-    })
+    // test case
 })
 
 /*
@@ -172,4 +166,8 @@ describe('PUT /contacts/:id', function() {
                 })
         })
     })
+})
+
+describe('DELETE /contects/:id', function() {
+    // test case
 })
