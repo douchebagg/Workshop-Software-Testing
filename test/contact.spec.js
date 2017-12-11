@@ -25,6 +25,7 @@ describe('GET /contacts', function() {
 describe('GET /contacts/:id', function() {
     it('should return contact at position 0, when call /contacts/0 with method GET.', () => {
         return request(app).get('/contacts/0')
+        // there should be 200 "OK"
         .expect(200)
         .then((res) => {
             let contact = res.body
@@ -34,18 +35,19 @@ describe('GET /contacts/:id', function() {
             expect(contact).toHaveProperty('phone')
             expect(contact).toHaveProperty('url')
             expect(contact).toHaveProperty('notes')
+
             expect(contact.id).toBe(0)
             expect(contact.name).toBe('Ned Stark')
             expect(contact.email).toBe('ned@winterfell.com')
             expect(contact.phone).toBe('123-456-7890')
             expect(contact.url).toBe('www.google.com')
             expect(contact.notes).toBe('Winter is coming.')
-             
         })
     })
 
-    it('should return contact at position 1, when call /contacts/1 with method GET.', ()=>{
+    it('should return contact at position 1, when call /contacts/1 with method GET.', () => {
         return request(app).get('/contacts/1')
+        // there should be 200 "OK"
         .expect(200)
         .then((res) => {
             let contact = res.body
@@ -55,6 +57,7 @@ describe('GET /contacts/:id', function() {
             expect(contact).toHaveProperty('phone')
             expect(contact).toHaveProperty('url')
             expect(contact).toHaveProperty('notes')
+
             expect(contact.id).toBe(1)
             expect(contact.name).toBe('Theon Greyjoy')
             expect(contact.email).toBe('tgreyjoy@winterfell.com')
@@ -212,15 +215,16 @@ describe('PUT /contacts/:id', function() {
 })
 
 describe('DELETE /contacts/:id', function() {
-    it('should delete contact position 0, when call /contacts/0 with method DELETE.',()=>{
+    it('should delete contact position 0, when call /contacts/0 with method DELETE.',() => {
         return request(app).delete('/contacts/0')
+        // there should be 204 No Content
         .expect(204)
         .then((response) => {
             return request(app).get('/contacts')
+            // there should be 200 "OK"
             .expect(200)
-            .then((res) =>{
+            .then((res) => {
                 let contacts = res.body
-                
                 expect(contacts).toHaveLength(13)
                 expect(contacts[0]).toHaveProperty('id')
                 expect(contacts[0]).toHaveProperty('name')
@@ -228,6 +232,7 @@ describe('DELETE /contacts/:id', function() {
                 expect(contacts[0]).toHaveProperty('phone')
                 expect(contacts[0]).toHaveProperty('url')
                 expect(contacts[0]).toHaveProperty('notes')
+
                 expect(contacts[0].id).toBe(1)
                 expect(contacts[0].name).toBe('Theon Greyjoy')
                 expect(contacts[0].email).toBe('tgreyjoy@winterfell.com')
@@ -239,9 +244,11 @@ describe('DELETE /contacts/:id', function() {
     })
     it('should delete contact position 1, when call /contacts/1 with method DELETE.', () => {
         return request(app).delete('/contacts/1')
+        // there should be 204 No Content
         .expect(204)
         .then((response) => {
             return request(app).get('/contacts')
+            // there should be 200 "OK"
             .expect(200)
             .then((res) => {
                 let contacts = res.body
@@ -252,16 +259,14 @@ describe('DELETE /contacts/:id', function() {
                 expect(contacts[1]).toHaveProperty('phone')
                 expect(contacts[1]).toHaveProperty('url')
                 expect(contacts[1]).toHaveProperty('notes')
+
                 expect(contacts[1].id).toBe(3)
                 expect(contacts[1].name).toBe('Jon Snow')
                 expect(contacts[1].email).toBe('jsnow@castleblack.com')
                 expect(contacts[1].phone).toBe('123-456-7890')
                 expect(contacts[1].url).toBe('www.google.com')
                 expect(contacts[1].notes).toBe('Knows nothing.')
-
             })
         })
-        
-        
     })
 })
